@@ -1,3 +1,10 @@
+/*	
+	Dans ce fichier on va mettre toutes les structures de donnees dont on pourrait avoir besoin
+	On rassemble tout ici pour structurer au maximum le code, normalement le programme ne devrait
+	pas etre tres complique, tout du moins dans un premier temps, donc on peut se permettre de
+	trier le code par type plutot que par fonctionnalite 
+*/
+
 function Joueur (perso1, perso2, perso3, deck) {
 	this.perso1 = perso1;
 	this.perso2 = perso2;
