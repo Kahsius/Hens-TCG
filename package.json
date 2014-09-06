@@ -1,5 +1,5 @@
 {
-	"name": "Hens TCG",
+	"name": "Hens-TCG",
 	"version": "0.1.0",
 	"dependencies": {
 		"express-session": "~1.7.6",

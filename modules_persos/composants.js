@@ -11,7 +11,8 @@ function Partie (joueur1, joueur2, terrain) {
 	this.terrain = terrain;
 }
 
-function Joueur (perso1, perso2, perso3, deck, main, defausse) {
+function Joueur (pseudo,  perso1, perso2, perso3, deck, main, defausse) {
+	this.pseudo = pseudo;
 	this.persos = [ perso1, perso2, perso3 ];
 	this.deck = deck;
 }
@@ -69,7 +70,7 @@ function creerJoueurBidon () {
 	var carte = new Carte("yolo", "youpi", 1000, new Effet (1,1,1), 1000);
 	var yolo = new Perso("yolo", "swag", 1000, new Effet (1,1,1), 0);
 	var deck = new Deck([carte, carte, carte]);
-	var jojo = new Joueur(yolo, yolo, yolo, deck, null, null);
+	var jojo = new Joueur("jojo", yolo, yolo, yolo, deck, null, null);
 	return jojo;
 }
 

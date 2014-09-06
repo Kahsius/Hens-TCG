@@ -4,12 +4,14 @@ io = require('socket.io').listen(server),
 fs = require('fs'),
 composants = require('./modules_persos/composants');
 
+var jojo = composants.creerJoueurBidon();
+
 app.get('/game', function (req, res) {
 	res.render('game.ejs', {});
 });
 
-io.sockets.on('connection', function (socket, pseudo) {
-	console.log("Connection au socket réussie");
+io.sockets.on('connection', function (socket) {
+
 });
 
 
