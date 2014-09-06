@@ -68,9 +68,8 @@ function Effet (estActive, estDeclenche, estPermanent) {
 function creerJoueurBidon () {
 	var carte = new Carte("yolo", "youpi", 1000, new Effet (1,1,1), 1000);
 	var yolo = new Perso("yolo", "swag", 1000, new Effet (1,1,1), 0);
-	var deck = new Deck("")
-	var jojo = new Joueur(yolo, yolo, yolo, )
-
+	var deck = new Deck([carte, carte, carte]);
+	var jojo = new Joueur(yolo, yolo, yolo, deck, null, null);
 }
 
 exports.Partie = Partie;
