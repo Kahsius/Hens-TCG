@@ -70,6 +70,7 @@ function creerJoueurBidon () {
 	var yolo = new Perso("yolo", "swag", 1000, new Effet (1,1,1), 0);
 	var deck = new Deck([carte, carte, carte]);
 	var jojo = new Joueur(yolo, yolo, yolo, deck, null, null);
+	return jojo;
 }
 
 exports.Partie = Partie;

@@ -1,7 +1,8 @@
 var app = require('express')(),
 server = require('http').createServer(app),
 io = require('socket.io').listen(server),
-fs = require('fs');
+fs = require('fs'),
+composants = require('./modules_persos/composants');
 
 app.get('/game', function (req, res) {
 	res.render('game.ejs', {});
