@@ -1,0 +1,70 @@
+Déroulement du programme
+
+Le but est d’ici traduire le programme à plusieurs échelles en termes pseudo algorithmiques afin d’avoir une idée globale de la structure du code.
+Dans un premier temps, on suppose les arguments de partie déjà existants.
+
+
+
+Lancement de Partie ( joueur1, joueur2, terrain )
+
+    Partie.tour = 0;
+    Partie.joueurQuiCommence();         // on admet que c’est j1
+
+
+    pour perso dans joueur1.perso1 {
+        terrain.analyseEffetPerso(perso);               // On va stocker tous les types de pouvoirs présents dans terrain
+        terrain.placePerso(perso, joueur1.choixPos());  // pour faciliter le déclenchement de tous les differents types d'effets.
+    }
+    pour perso dans joueur2.perso2 {
+        terrain.analyseEffetPerso(perso);
+        terrain.placePerso(perso, joueur2.choixPos());
+    }
+
+    // On se lance ensuite dans la vraie structure du tour
+    i = 1;
+    tant que (joueur1.perso.length > 1 && joueur2.perso.length > 1) {
+        tour++;
+        j = i ;                     // indice du joueur dont ce n’est pas le tour
+        i = ( i % 2 ) + 1 ;         // indice du joueur dont c’est le tour
+        joueur = “joueur” + i;
+        joueurOppose = “joueur” + j;
+
+        terrain.effetDebutTour();
+        choix = joueur.choixTour();
+
+        si choix == meditation {
+            joueur.pioche(3);           // la méca de défausse
+                                        // est comprise dans pioche();
+            joueur.deplacePerso(joueur1.choixPerso(), 2)
+        }
+        si choix != meditation {
+            tant que (joueur.aJoue = false) {     // booleen pour sorts gratuits
+                cible = joueur.clicSurCible();    // je ne sais pas comment on traite ça en graphique
+                                                  // ça en graphique
+                si (cible est un perso && perso.effet.activable == true ) {     // Afficher eventuellement bouton effet perso 
+                    terrain.afficheBoutonClicableEffetPerso(cible.effet);     //Les effet .isClicked ne sont pas mis ici, ils seront
+                }                                                           // directement dans les classes
+                sinon si (cible est une carte dans main) {
+                    terrain.afficheBoutonJouer(cible.effet);
+                }
+            }
+        }
+    }   
+
+Fin de Partie
+
+Quand on clic sur un bouton pouvant lancer un effet de perso ou un sort :
+
+    Bouton.isCliked() {
+        effet.coutActivation();     // pour les eventuels couts de defausse
+        si ( effet.needCible == true ) {                                    //
+            caseCible = joueur.choixCase();                                 //
+            si (distance(effet.perso.case, caseCible) > carte.portee ) {    //
+                terrain.ditQueImpossible();                                 //  Tout ce bloc pourra etre factorise en 
+            }                                                               //  une methode effet.choixCible();
+            sinon {                                                         //
+                effet.cible = caseCible;                                    //
+            }                                                               //
+        }                                                                   //
+        terrain.appliqueEffet(effet);               // comprend l'eventuel setJoueurAJoue(true);
+    }

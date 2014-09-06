@@ -1,0 +1,10 @@
+{
+	"name": "Hens TCG",
+	"version": "0.1.0",
+	"dependencies": {
+		"express-session": "~1.7.6",
+		"socket.io": "~1.1.0"
+	},
+	"author": "Old & Kahs",
+	"description": "Le meilleur TCG de l'univers !"
+}

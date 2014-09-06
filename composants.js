@@ -5,19 +5,39 @@
 	trier le code par type plutot que par fonctionnalite 
 */
 
-function Joueur (perso1, perso2, perso3, deck) {
-	this.perso1 = perso1;
-	this.perso2 = perso2;
-	this.perso3 = perso3;
+function Partie (joueur1, joueur2, terrain) {
+	this.joueur1 = joueur1;
+	this.joueur2 = joueur2;
+	this.terrain = terrain;
+}
+
+function Joueur (perso1, perso2, perso3, deck, main, defausse) {
+	this.persos = [ perso1, perso2, perso3 ];
 	this.deck = deck;
 }
 
-function Perso (nom, village, pv, pouvoir) {
-	this.nom = nom;
+function Main (listeCartes) {
+	this.listeCartes = listeCartes;
+	this.taille = listeCartes.length;
+}
+
+function Deck (listeCartes) {
+	this.listeCartes = listeCartes;
+	this.taille = listeCartes.length;
+}
+
+function Defausse (listeCartes) {
+	this.listeCartes = listeCartes;
+	this.taille = listeCartes.length;
+}
+
+function Perso (nom, village, pv, pouvoir, caseTerrain) {
+	this.nom = nom;	
 	this.village = village;
 	this.pv = pv;
 	this.pouvoir = pv;
-}
+	this.caseTerrain = caseTerrain
+}	
 
 function Carte (nomPerso, nom, portee, effet, persistance ) {
 	this.nomPerso = nomPerso;
@@ -27,27 +47,20 @@ function Carte (nomPerso, nom, portee, effet, persistance ) {
 	this.persistance = persistance;
 }
 
+function Terrain (listeCases) {
+	this.listeCases = listeCases;
+	this.effetsDeclenches = [];
+	this.effetsPermanents = [];
+}
+
 function Case (pos, perso, effet) {
 	this.pos = pos;
 	this.perso = perso;
 	this.effet = effet;
 }
 
-function Deck (listeCartes) {
-	this.listeCartes = listeCartes;
-	this.taille = listeCartes.length;
-}
-
-function Terrain (listeCases) {
-	this.listeCases = listeCases;
-}
-
-function Main (listeCartes) {
-	this.listeCartes = listeCartes;
-	this.taille = listeCartes.length;
-}
-
-function Defausse (listeCartes) {
-	this.listeCartes = listeCartes;
-	this.taille = listeCartes.length;
+function Effet (estActive, estDeclenche, estPermanent) {
+	this.estActive = estActive;
+	this.estDeclenche = estDeclenche;
+	this.estPermanent = estPermanent;
 }
