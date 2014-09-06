@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>C'est l'heure du D-D-D-D-D-DUEL!!(8)</title>
+	<link rel="stylesheet" type="text/css" href="css/game.css">
+</head>
+<body>
+<script type="text/javascript">
+	var nbCases=5;
+</script>
+<header>
+	HENS TCG OP POPO
+</header>
+<% 
+	for(var i = 0;i<nbCases;i++){
+%>
+	<div class="case" style="border:1px solid red; position:absolute;top:100px;left:"+<%= i*100 +100 %>+"px;width:50px;height:100px; float:left;"></div>
+<% } %>
+</body>
+</html>
