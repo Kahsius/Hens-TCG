@@ -64,3 +64,23 @@ function Effet (estActive, estDeclenche, estPermanent) {
 	this.estDeclenche = estDeclenche;
 	this.estPermanent = estPermanent;
 }
+
+function creerJoueurBidon () {
+	var carte = new Carte("yolo", "youpi", 1000, new Effet (1,1,1), 1000);
+	var yolo = new Perso("yolo", "swag", 1000, new Effet (1,1,1), 0);
+	var deck = new Deck("")
+	var jojo = new Joueur(yolo, yolo, yolo, )
+
+}
+
+exports.Partie = Partie;
+exports.Joueur = Joueur;
+exports.Main = Main;
+exports.Deck = Deck;
+exports.Defausse = Defausse;
+exports.Perso = Perso;
+exports.Carte = Carte;
+exports.Terrain = Terrain;
+exports.Case = Case;
+exports.Effet = Effet;
+exports.creerJoueurBidon = creerJoueurBidon;
