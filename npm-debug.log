@@ -2,7 +2,7 @@
 1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
 1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'install',
-1 verbose cli   'express' ]
+1 verbose cli   'socket.io' ]
 2 info using npm@1.4.21
 3 info using node@v0.10.30
 4 verbose node symlink C:\Program Files\nodejs\\node.exe
@@ -21,8 +21,8 @@
 6 error including the npm and node versions, at:
 6 error     <http://github.com/npm/npm/issues>
 7 error System Windows_NT 6.2.9200
-8 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "express"
-9 error cwd C:\Users\cassius81\Desktop\Web\Hens-TCG
+8 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "socket.io"
+9 error cwd C:\Users\Toshiba\Documents\GitHub\Hens-TCG
 10 error node -v v0.10.30
 11 error npm -v 1.4.21
 12 verbose exit [ 1, true ]
