@@ -5,16 +5,15 @@
 	<link rel="stylesheet" type="text/css" href="css/game.css">
 </head>
 <body>
-<script type="text/javascript">
-	var nbCases=5;
-</script>
+
 <header>
 	HENS TCG OP POPO
 </header>
+<% var nbCases = 5; %>
 <% 
-	for(var i = 0;i< 5;i++){
+	for(var i = 0;i< nbCases;i++){
 %>
-	<div class="case" style="border:1px solid red;width:50px;height:100px; float:left; top:100px;"></div>
+	<div class="case"  style="border:1px solid red;width:50px;height:100px; float:left; top:100px;"></div>
 <% } %>
 
 <script type="text/javascript">
