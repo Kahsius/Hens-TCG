@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>C'est l'heure du D-D-D-D-D-DUEL!!(8)</title>
-	<link rel="stylesheet" type="text/css" href="css/game.css">
-</head>
-<body>
+	<head>
+		<title>D-D-D-Duel !!!</title>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	</head>
 
-<header>
-	HENS TCG OP POPO
-</header>
-<% var nbCases = 5; %>
-<% 
-	for(var i = 0;i< nbCases;i++){
-%>
-	<div class="case"  style="border:1px solid red;width:50px;height:100px; float:left; top:100px;"></div>
-<% } %>
+	<body>
+		<header>
+			HENS TCG OP POPO
+		</header>
+		<% var nbCases = 5; %>
+		<% 
+			for(var i = 0;i< nbCases;i++){
+		%>
+			<div class="case"  style="border:1px solid red;width:50px;height:100px; float:left; top:100px;"></div>
+		<% } %>
 
-<script type="text/javascript">
-	 var socket = io.connect('http://localhost:8080');
-</script>
-</body>
+		<script type="text/javascript">
+			console.log("Le js se lance bien");
+			 var socket = io.connect('http://localhost:8080');
+			 var pseudo = prompt('Votre pseudo ?');
+			 // On envoie le pseudo pour vérifier si tout est bon
+			 socket.emit('rejoint', pseudo);
+			 socket.on('rejointOK', function(pseudo){
+				document.title = pseudo + ' - ' + document.title;			 	
+			 });
+			 socket.on('rejointNOK', function() {
+			 	pseudo = prompt('Votre pseudo ?');
+			 	socket.emit('rejoint', pseudo);
+			 });
+		</script>
+	</body>
 </html>

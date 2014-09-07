@@ -35,8 +35,10 @@ function Defausse (listeCartes) {
 function Perso (nom, village, pv, pouvoir, caseTerrain) {
 	this.nom = nom;	
 	this.village = village;
+	this.pvInit = pv;
 	this.pv = pv;
-	this.pouvoir = pv;
+	this.pouvoirInit = pouvoir;
+	this.pouvoir = pouvoir;
 	this.caseTerrain = caseTerrain
 }	
 
@@ -66,12 +68,34 @@ function Effet (estActive, estDeclenche, estPermanent) {
 	this.estPermanent = estPermanent;
 }
 
-function creerJoueurBidon () {
+function creerJoueursBidons () {
+	// Création de la carte bidon
 	var carte = new Carte("yolo", "youpi", 1000, new Effet (1,1,1), 1000);
+	// Création du perso bidon
 	var yolo = new Perso("yolo", "swag", 1000, new Effet (1,1,1), 0);
-	var deck = new Deck([carte, carte, carte]);
-	var jojo = new Joueur("jojo", yolo, yolo, yolo, deck, null, null);
-	return jojo;
+	// Création du deck bidon
+	var deck = new Deck([]);
+	for(var i = 0; i < 30; i++) {
+		deck.listeCartes.push(carte);
+	}
+	// Création des deux joueurs bidons avec tout ce qu'il y a au dessus
+	var jojo = new Joueur("jojo", yolo, yolo, yolo, deck, [], []);
+	var toto = new Joueur("toto", yolo, yolo, yolo, deck, [], []);
+
+	// On retourne ce qu'il faut
+	return [jojo, toto];
+}
+
+function creerTerrain() {
+	var listeCases = new Array(2,5);
+	for (var i = 0; i < 2; i ++) { 							// i représente le joueur
+		for (var j = 0; i < 5; i ++) {						// j représente la position de la case
+			listeCases[i,j] = new Case (j, null, null);		// listeCases[i][j] = listeCases[joueur][pos]
+		}
+	}
+	// On crée le terrain à partir du tableau de cases précédent
+	var terrain = new Terrain(listeCases);
+	return terrain;
 }
 
 exports.Partie = Partie;
@@ -84,4 +108,5 @@ exports.Carte = Carte;
 exports.Terrain = Terrain;
 exports.Case = Case;
 exports.Effet = Effet;
-exports.creerJoueurBidon = creerJoueurBidon;
+exports.creerJoueursBidons = creerJoueursBidons;
+exports.creerTerrain = creerTerrain;
