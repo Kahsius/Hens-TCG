@@ -52,13 +52,12 @@ function Carte (nomPerso, nom, portee, effet, persistance ) {
 
 function Terrain (listeCases) {
 	this.listeCases = listeCases;
-	this.effetsDeclenches = [];
-	this.effetsPermanents = [];
+	this.effetsDeclenches = new Array();
+	this.effetsPermanents = new Array();
 }
 
 function Case (pos, perso, effet) {
 	this.pos = pos;
-	this.perso = perso;
 	this.effet = effet;
 }
 
@@ -72,15 +71,17 @@ function creerJoueursBidons () {
 	// Création de la carte bidon
 	var carte = new Carte("yolo", "youpi", 1000, new Effet (1,1,1), 1000);
 	// Création du perso bidon
-	var yolo = new Perso("yolo", "swag", 1000, new Effet (1,1,1), 0);
+	var yolo1 = new Perso("yolo1", "swag", 1000, new Effet (1,1,1), 0);
+	var yolo2 = new Perso("yolo2", "swag", 1000, new Effet (1,1,1), 0);
+	var yolo3 = new Perso("yolo3", "swag", 1000, new Effet (1,1,1), 0);
 	// Création du deck bidon
 	var deck = new Deck([]);
 	for(var i = 0; i < 30; i++) {
 		deck.listeCartes.push(carte);
 	}
 	// Création des deux joueurs bidons avec tout ce qu'il y a au dessus
-	var jojo = new Joueur("jojo", yolo, yolo, yolo, deck, [], []);
-	var toto = new Joueur("toto", yolo, yolo, yolo, deck, [], []);
+	var jojo = new Joueur("jojo", yolo1, yolo2, yolo3, deck, [], []);
+	var toto = new Joueur("toto", yolo1, yolo2, yolo3, deck, [], []);
 
 	// On retourne ce qu'il faut
 	return [jojo, toto];
@@ -89,8 +90,8 @@ function creerJoueursBidons () {
 function creerTerrain() {
 	var listeCases = new Array(2,5);
 	for (var i = 0; i < 2; i ++) { 							// i représente le joueur
-		for (var j = 0; i < 5; i ++) {						// j représente la position de la case
-			listeCases[i,j] = new Case (j, null, null);		// listeCases[i][j] = listeCases[joueur][pos]
+		for (var j = 0; j < 5; j ++) {						// j représente la position de la case
+			listeCases[i,j] = new Case (j, null);		// listeCases[i][j] = listeCases[joueur][pos]
 		}
 	}
 	// On crée le terrain à partir du tableau de cases précédent

@@ -18,18 +18,37 @@
 		<% } %>
 
 		<script type="text/javascript">
+
 			console.log("Le js se lance bien");
 			 var socket = io.connect('http://localhost:8080');
 			 var pseudo = prompt('Votre pseudo ?');
+
 			 // On envoie le pseudo pour vérifier si tout est bon
 			 socket.emit('rejoint', pseudo);
-			 socket.on('rejointOK', function(pseudo){
-				document.title = pseudo + ' - ' + document.title;			 	
+			 socket.on('rejointOK', function(){
+			 	console.log('rejointOK');
+				document.title = pseudo + ' - ' + document.title;
+				socket.emit('rejointFini');			 	
 			 });
+
 			 socket.on('rejointNOK', function() {
+			 	console.log('rejointNOK');
 			 	pseudo = prompt('Votre pseudo ?');
 			 	socket.emit('rejoint', pseudo);
 			 });
+
+			 socket.on('placements', function(indice, persos) {
+			 	console.log('placements');
+			 	var placements = new Array(3);
+			 	for ( var i = 0; i < 3; i ++) {
+			 		do {
+			 			placements[i] = prompt('Quelle position pour ' + persos[i].nom + " ?");
+			 		} while (placements[i] < 1 || placements[i] > 5);
+			 	}
+			 	console.log('placements choisis : ' + placements[0] + placements[1] + placements[2]);
+			 	socket.emit('placementFini', indice, placements);
+			 });
+
 		</script>
 	</body>
 </html>
