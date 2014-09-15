@@ -1,3 +1,5 @@
+// TODO : faire cible, et tester tout ce beau monde.
+
 /*	
 	Dans ce fichier on va mettre toutes les structures de donnees dont on pourrait avoir besoin
 	On rassemble tout ici pour structurer au maximum le code, normalement le programme ne devrait
@@ -11,23 +13,15 @@ function Partie (joueur1, joueur2, terrain) {
 	this.terrain = terrain;
 }
 
-function Joueur (pseudo,  perso1, perso2, perso3, deck, main, defausse) {
+function Joueur (pseudo,  perso1, perso2, perso3, deck) {
 	this.pseudo = pseudo;
 	this.persos = [ perso1, perso2, perso3 ];
 	this.deck = deck;
-}
-
-function Main (listeCartes) {
-	this.listeCartes = listeCartes;
-	this.taille = listeCartes.length;
+	this.main = new Array();
+	this.defausse = new Array();
 }
 
 function Deck (listeCartes) {
-	this.listeCartes = listeCartes;
-	this.taille = listeCartes.length;
-}
-
-function Defausse (listeCartes) {
 	this.listeCartes = listeCartes;
 	this.taille = listeCartes.length;
 }
@@ -61,10 +55,149 @@ function Case (pos, perso, effet) {
 	this.effet = effet;
 }
 
-function Effet (estActive, estDeclenche, estPermanent) {
+function Effet (estActive, estDeclenche, estPermanent, portee, fonction, cible) {
 	this.estActive = estActive;
 	this.estDeclenche = estDeclenche;
 	this.estPermanent = estPermanent;
+	this.portee = portee;
+	this.fonction = fonction;
+	this.cible = cible;
+}
+
+function cible(socket, iCourant, perso, carte) {
+	// A FAIRE
+}
+
+function pioche(joueur, n) {
+	for (var i = 0; i < n; i++) {
+		joueur.main.push(joueur.deck[0]);
+		joueur.deck.splice(0,1);
+	}
+}
+
+function degats(joueur, perso, n) {
+	perso.pv = perso.pv - n;
+	if (perso.pv <= 0) {
+		detruitPerso(joueur, perso);
+	}
+}
+
+function defausse(socket, joueur, n) {
+	var choix;
+	for (var i = 0; i < n; i++) {
+		choix = demandeInfos(socket, 'Carte à défausser (position dans votre main) ?');
+		joueur.defausse.push(joueur.main[choix-1]);
+		joueur.main.splice(choix-1,1);
+	}
+}
+
+function defausseAleatoire(joueur, n) {
+	var choix;
+	for (var i = 0; i < n; i++) {
+		choix = Math.floor(joueur.main.length * Math.random());
+		joueur.defausse.push(joueur.main[choix]);
+		joueur.main.splice(choix,1);
+	}
+}
+
+function deplace(joueur, perso, droite) { // droite est un booleen pour dire si on va à droite (1) ou à gauche (0)
+	var posActuelle = perso.caseTerrain.pos;
+	var deplacement;
+
+	if (droite) { deplacement = 1 }
+	else { deplacement = -1 }
+
+	for (var i =  0; i < joueur.persos.length; i++) {
+		if (joueur.persos[i].caseTerrain.pos == posActuelle + deplacement) {
+			joueur.persos[i].caseTerrain.pos = joueur.persos[i].caseTerrain.pos - deplacement;
+			perso.caseTerrain.pos = posActuelle + deplacement;
+		}
+		else {
+			perso.caseTerrain.pos = posActuelle + deplacement;
+		}
+	}
+}
+
+function soigne(perso, n) {
+	perso.pv = perso.pv + n;
+	if (perso.pv > perso.pvInit) {
+		perso.pv = perso.pvInit;
+	}
+}
+
+function detruitPerso(joueur, perso) {
+	
+	// Partie terrain
+	var index = joueur.persos.indexOf(perso);
+	if (index > -1) {
+		joueur.persos.splice(index,1);
+	}
+
+	// Partie main
+	for (var i = joueur.main.length; i > -1; i--) {
+		if (joueur.main[index-1].nomPerso == perso.nom) {
+			joueur.main.splice(index-1,1);
+		}
+	}
+
+	// Partie deck
+	for (var i = joueur.deck.length; i > -1; i--) {
+		if (joueur.deck[index-1].nomPerso == perso.nom) {
+			joueur.deck.splice(index-1,1);
+		}
+	}
+}
+
+function jouer(socket, joueur, carte) {
+	// Récupération du perso lanceur
+	var index;
+	for ( var i = 0; i < joueur.persos.length; i++) {
+		if (joueur.persos[i].nom == carte.nomPerso) {
+			// On récupère i et pas le perso parce que sinon la fonction resterait locale
+			index = i;
+		}
+	}
+
+	var deplacer = -1;
+	while (deplacer != 1 && deplacer != 0) {
+		deplacer = demandeInfos(socket, 'Voulez-vous déplacer ce perso ?');
+	}
+
+	var ou = -1;
+	if (deplacer) {
+		while (ou != "d" && ou != "g") {
+			ou = demandeInfos(socket, 'A droite (d) ou à gauche (g) ?');
+		}
+		if (ou == d) {ou = 1}
+		else {ou = 0}
+		deplace(joueur, joueur.perso[i], ou);
+	}
+
+	// Récupération de la cible
+	var cible = cible(socket, joueur, joueur.persos[i], carte);
+	carte.effet.fonction(cible);
+
+	var indexCarte = joueur.main.indexOf(carte);
+	joueur.defausse.push(joueur.main[indexCarte]); 
+	joueur.main.splice(indexCarte, 1);
+}
+
+function melange(deck) {
+	for ( var i = deck.length-1; i >= 1; position--) {
+		var hasard = Math.floor(Math.random()*(i+1));
+		var save = deck[i];
+		deck[i] = deck[hasard];
+		deck[hasard] = save;	
+	}
+}
+
+function testActons() {}
+
+function demandeInfos(socket, string) {
+	socket.emit('info', string);
+	socket.on('retourInfo', function(info) {
+		return info;
+	});
 }
 
 function creerJoueursBidons () {
@@ -99,15 +232,27 @@ function creerTerrain() {
 	return terrain;
 }
 
+// Liste des exports
+
 exports.Partie = Partie;
 exports.Joueur = Joueur;
-exports.Main = Main;
 exports.Deck = Deck;
-exports.Defausse = Defausse;
 exports.Perso = Perso;
 exports.Carte = Carte;
 exports.Terrain = Terrain;
 exports.Case = Case;
 exports.Effet = Effet;
+
+exports.cible = cible;
+exports.pioche = pioche;
+exports.degats = degats;
+exports.defausse = defausse;
+exports.defausseAleatoire = defausseAleatoire;
+exports.deplace = deplace;
+exports.soigne = soigne;
+exports.detruitPerso = detruitPerso;
+exports.jouer = jouer;
+exports.melange = melange;
+
 exports.creerJoueursBidons = creerJoueursBidons;
 exports.creerTerrain = creerTerrain;
