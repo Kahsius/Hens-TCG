@@ -191,7 +191,7 @@ function melange(deck) {
 	}
 }
 
-function testActons() {}
+function testActions() {}
 
 function demandeInfos(socket, string) {
 	socket.emit('info', string);
@@ -224,7 +224,7 @@ function creerTerrain() {
 	var listeCases = new Array(2,5);
 	for (var i = 0; i < 2; i ++) { 							// i représente le joueur
 		for (var j = 0; j < 5; j ++) {						// j représente la position de la case
-			listeCases[i,j] = new Case (j, null);		// listeCases[i][j] = listeCases[joueur][pos]
+			listeCases[i,j] = new Case (j, null);		// listeCases[i,j] = listeCases[joueur,pos]
 		}
 	}
 	// On crée le terrain à partir du tableau de cases précédent
