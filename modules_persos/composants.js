@@ -221,7 +221,22 @@ function creerJoueursBidons () {
 }
 
 function creerTerrain() {
-	var listeCases = new Array(2,5);
+	var listeCases = new Array(2,5); // COMMENTAIRE : c'est un peu bizarre ça non ? tu créé un tableau avec les valeurs 2 et 5 ?
+	/* je touche pas parce que je suis pas sur, mais je suppose que tu voulais faire un tableau à deux dimensions ,avec 2 lignes
+	et 5 colonnes non ? pour faire ça, j'ai trouvé cette solution, un peu bancale je pense:
+	var monTableau = new Array();
+	for(i=0;i<2;i++){
+		monTableau.push(new Array()); // du coup tu as un nombre de colonnes variables si tu le souhaite d'une ligne à l'autre
+		//sinon j'ai aussi écrit comme ça , mais ça me fait bizarre 
+		monTableau[i]=new Array();
+
+	}
+	// du coup pour parcourrir ce tableau ça te donne:
+	monTableau[3][4] 4ieme ligne 5eme case 
+
+	EDIT: NP TA SYNTAXE EN DESSOUS EST JUSTE C JUSTE CET APPEL AU DESSUS QUI SERT PAS >_>
+	*/
+
 	for (var i = 0; i < 2; i ++) { 							// i représente le joueur
 		for (var j = 0; j < 5; j ++) {						// j représente la position de la case
 			listeCases[i,j] = new Case (j, null);		// listeCases[i,j] = listeCases[joueur,pos]

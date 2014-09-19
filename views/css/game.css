@@ -5,3 +5,9 @@ header{
 	color: white;
 	text-align: center;
 }
+
+.bloc{
+	width: 500px;
+	height: 300px;
+	background: #444;
+}

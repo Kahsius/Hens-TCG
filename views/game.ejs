@@ -2,22 +2,63 @@
 <html>
 	<head>
 		<title>D-D-D-Duel !!!</title>
-		<link rel="stylesheet" type="text/css" href="css/game.css">
+		<link rel="stylesheet" type="text/css" href="/view/css/game.css">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	</head>
 
 	<body>
+	<style type="text/css">
+	header{
+	width: 100%;
+	height: 50px;
+	background: #333;
+	color: white;
+	text-align: center;
+}
+
+.bloc{
+	width:550px;
+	height: 320px;
+	background: #444;
+	position: relative;
+	margin: auto;
+	margin-top: 5em;
+}
+
+.case{
+	/*background:#eee;*/
+	width:100px;
+	height:150px;
+	float:left;
+	margin:5px;
+	transition: all 0.4s;
+}
+.case:hover{
+	transform:scale(1.1);
+	transform:scale(1.1);
+	-webkit-transform:scale(1.1);
+}
+</style>
 		<header>
 			HENS TCG OP POPO
 		</header>
 		<% var nbCases = 5; %>
+		<div class="bloc">
 		<% 
+		for(var j=0;j<2;j++){
 			for(var i = 0;i< nbCases;i++){
 		%>
-			<div class="case"  style="border:1px solid red;width:50px;height:100px; float:left; top:100px;"></div>
-		<% } %>
-
+				<a   href="#" onClick="CaseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ></a>
+		<% } 
+		}
+		%>
+		</div>
 		<script type="text/javascript">
+
+		function CaseClic(indiceCase,joueur){ 
+			alert("case "+indiceCase+" du joueur "+joueur+".");
+
+		}
 
 			console.log("Le js se lance bien");
 			 var socket = io.connect('http://localhost:8080');
