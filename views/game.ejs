@@ -4,6 +4,7 @@
 		<title>D-D-D-Duel !!!</title>
 		<link rel="stylesheet" type="text/css" href="/view/css/game.css">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/modules_persos/actions_client.js"></script>
 	</head>
 
 	<body>
@@ -53,11 +54,12 @@
 		}
 		%>
 		</div>
+		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='var carte = creerCarteBidon(); jouer(carte)'/>
 		<script type="text/javascript">
 
 		function CaseClic(indiceCase,joueur){ 
 			alert("case "+indiceCase+" du joueur "+joueur+".");
-
+			socket.emit('clic', joueur, indiceCase);
 		}
 
 			console.log("Le js se lance bien");

@@ -8,8 +8,7 @@
 */
 
 function Partie (joueur1, joueur2, terrain) {
-	this.joueur1 = joueur1;
-	this.joueur2 = joueur2;
+	this.joueurs = [joueur1, joueur2];
 	this.terrain = terrain;
 }
 
@@ -36,12 +35,10 @@ function Perso (nom, village, pv, pouvoir, caseTerrain) {
 	this.caseTerrain = caseTerrain
 }	
 
-function Carte (nomPerso, nom, portee, effet, persistance ) {
+function Carte (nomPerso, nom, effet ) {
 	this.nomPerso = nomPerso;
 	this.nom = nom;
-	this.portee = portee;
 	this.effet = effet;
-	this.persistance = persistance;
 }
 
 function Terrain (listeCases) {
@@ -55,154 +52,26 @@ function Case (pos, perso, effet) {
 	this.effet = effet;
 }
 
-function Effet (estActive, estDeclenche, estPermanent, portee, fonction, cible) {
+function Effet (cibleFinale, ciblesLegales, aoe, nombre, estActive, estDeclenche, duree, portee, sort) {
+	// Partie pour les cibles
+	this.cibleFinale = cibleFinale;			// le plus souvent null puisqu'elle viendra après
+	this.ciblesLegales = ciblesLegales; 	// = [booléen ennemi, booléen allié]
+	this.aoe;
+	this.nombre;
+
+	// Partie pour l'effet
 	this.estActive = estActive;
 	this.estDeclenche = estDeclenche;
-	this.estPermanent = estPermanent;
-	this.portee = portee;
-	this.fonction = fonction;
-	this.cible = cible;
-}
+	this.duree = duree;
+	this.portee = portee;		// 0 si aoe
 
-function cible(socket, iCourant, perso, carte) {
-	// A FAIRE
-}
-
-function pioche(joueur, n) {
-	for (var i = 0; i < n; i++) {
-		joueur.main.push(joueur.deck[0]);
-		joueur.deck.splice(0,1);
-	}
-}
-
-function degats(joueur, perso, n) {
-	perso.pv = perso.pv - n;
-	if (perso.pv <= 0) {
-		detruitPerso(joueur, perso);
-	}
-}
-
-function defausse(socket, joueur, n) {
-	var choix;
-	for (var i = 0; i < n; i++) {
-		choix = demandeInfos(socket, 'Carte à défausser (position dans votre main) ?');
-		joueur.defausse.push(joueur.main[choix-1]);
-		joueur.main.splice(choix-1,1);
-	}
-}
-
-function defausseAleatoire(joueur, n) {
-	var choix;
-	for (var i = 0; i < n; i++) {
-		choix = Math.floor(joueur.main.length * Math.random());
-		joueur.defausse.push(joueur.main[choix]);
-		joueur.main.splice(choix,1);
-	}
-}
-
-function deplace(joueur, perso, droite) { // droite est un booleen pour dire si on va à droite (1) ou à gauche (0)
-	var posActuelle = perso.caseTerrain.pos;
-	var deplacement;
-
-	if (droite) { deplacement = 1 }
-	else { deplacement = -1 }
-
-	for (var i =  0; i < joueur.persos.length; i++) {
-		if (joueur.persos[i].caseTerrain.pos == posActuelle + deplacement) {
-			joueur.persos[i].caseTerrain.pos = joueur.persos[i].caseTerrain.pos - deplacement;
-			perso.caseTerrain.pos = posActuelle + deplacement;
-		}
-		else {
-			perso.caseTerrain.pos = posActuelle + deplacement;
-		}
-	}
-}
-
-function soigne(perso, n) {
-	perso.pv = perso.pv + n;
-	if (perso.pv > perso.pvInit) {
-		perso.pv = perso.pvInit;
-	}
-}
-
-function detruitPerso(joueur, perso) {
-	
-	// Partie terrain
-	var index = joueur.persos.indexOf(perso);
-	if (index > -1) {
-		joueur.persos.splice(index,1);
-	}
-
-	// Partie main
-	for (var i = joueur.main.length; i > -1; i--) {
-		if (joueur.main[index-1].nomPerso == perso.nom) {
-			joueur.main.splice(index-1,1);
-		}
-	}
-
-	// Partie deck
-	for (var i = joueur.deck.length; i > -1; i--) {
-		if (joueur.deck[index-1].nomPerso == perso.nom) {
-			joueur.deck.splice(index-1,1);
-		}
-	}
-}
-
-function jouer(socket, joueur, carte) {
-	// Récupération du perso lanceur
-	var index;
-	for ( var i = 0; i < joueur.persos.length; i++) {
-		if (joueur.persos[i].nom == carte.nomPerso) {
-			// On récupère i et pas le perso parce que sinon la fonction resterait locale
-			index = i;
-		}
-	}
-
-	var deplacer = -1;
-	while (deplacer != 1 && deplacer != 0) {
-		deplacer = demandeInfos(socket, 'Voulez-vous déplacer ce perso ?');
-	}
-
-	var ou = -1;
-	if (deplacer) {
-		while (ou != "d" && ou != "g") {
-			ou = demandeInfos(socket, 'A droite (d) ou à gauche (g) ?');
-		}
-		if (ou == d) {ou = 1}
-		else {ou = 0}
-		deplace(joueur, joueur.perso[i], ou);
-	}
-
-	// Récupération de la cible
-	var cible = cible(socket, joueur, joueur.persos[i], carte);
-	carte.effet.fonction(cible);
-
-	var indexCarte = joueur.main.indexOf(carte);
-	joueur.defausse.push(joueur.main[indexCarte]); 
-	joueur.main.splice(indexCarte, 1);
-}
-
-function melange(deck) {
-	for ( var i = deck.length-1; i >= 1; position--) {
-		var hasard = Math.floor(Math.random()*(i+1));
-		var save = deck[i];
-		deck[i] = deck[hasard];
-		deck[hasard] = save;	
-	}
-}
-
-function testActions() {}
-
-function demandeInfos(socket, string) {
-	socket.emit('info', string);
-	socket.on('retourInfo', function(info) {
-		return info;
-	});
+	// La fonction d'effet a proprement parler
+	this.sort = sort;		// n'a besoin que de sa cible pour fonctionner, le reste est géré en amont
 }
 
 function creerJoueursBidons () {
 	// Création de la carte bidon
-	var carte = new Carte("yolo", "youpi", 1000, new Effet (1,1,1), 1000);
+	var carte = new Carte("yolo", "youpi", new Effet (1,1,1));
 	// Création du perso bidon
 	var yolo1 = new Perso("yolo1", "swag", 1000, new Effet (1,1,1), 0);
 	var yolo2 = new Perso("yolo2", "swag", 1000, new Effet (1,1,1), 0);
@@ -221,21 +90,7 @@ function creerJoueursBidons () {
 }
 
 function creerTerrain() {
-	var listeCases = new Array(2,5); // COMMENTAIRE : c'est un peu bizarre ça non ? tu créé un tableau avec les valeurs 2 et 5 ?
-	/* je touche pas parce que je suis pas sur, mais je suppose que tu voulais faire un tableau à deux dimensions ,avec 2 lignes
-	et 5 colonnes non ? pour faire ça, j'ai trouvé cette solution, un peu bancale je pense:
-	var monTableau = new Array();
-	for(i=0;i<2;i++){
-		monTableau.push(new Array()); // du coup tu as un nombre de colonnes variables si tu le souhaite d'une ligne à l'autre
-		//sinon j'ai aussi écrit comme ça , mais ça me fait bizarre 
-		monTableau[i]=new Array();
-
-	}
-	// du coup pour parcourrir ce tableau ça te donne:
-	monTableau[3][4] 4ieme ligne 5eme case 
-
-	EDIT: NP TA SYNTAXE EN DESSOUS EST JUSTE C JUSTE CET APPEL AU DESSUS QUI SERT PAS >_>
-	*/
+	var listeCases = new Array(2,5);
 
 	for (var i = 0; i < 2; i ++) { 							// i représente le joueur
 		for (var j = 0; j < 5; j ++) {						// j représente la position de la case
@@ -245,6 +100,12 @@ function creerTerrain() {
 	// On crée le terrain à partir du tableau de cases précédent
 	var terrain = new Terrain(listeCases);
 	return terrain;
+}
+
+function creerCarteBidon() {
+	var effet = new Effet (null, [1,0], 0, 1, 0, 0, 0, 2, (function() { alert('Ca fontionne !'); }));
+	var carte = new Carte ('yolo1', 'Super-Yolo', effet);
+	return carte;
 }
 
 // Liste des exports
@@ -258,16 +119,6 @@ exports.Terrain = Terrain;
 exports.Case = Case;
 exports.Effet = Effet;
 
-exports.cible = cible;
-exports.pioche = pioche;
-exports.degats = degats;
-exports.defausse = defausse;
-exports.defausseAleatoire = defausseAleatoire;
-exports.deplace = deplace;
-exports.soigne = soigne;
-exports.detruitPerso = detruitPerso;
-exports.jouer = jouer;
-exports.melange = melange;
-
 exports.creerJoueursBidons = creerJoueursBidons;
 exports.creerTerrain = creerTerrain;
+exports.creerCarteBidon = creerCarteBidon;
