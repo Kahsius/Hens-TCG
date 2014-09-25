@@ -3,7 +3,7 @@ var app = express(),
 server = require('http').createServer(app),
 io = require('socket.io').listen(server),
 fs = require('fs'),
-composants = require('./modules_persos/composants');
+composants = require('./ressources/composants');
 
 var nombreDeJoueurs = 0;
 
@@ -18,7 +18,7 @@ app.get('/game', function (req, res) {
 
 io.sockets.on('connection', function (socket) {
 	console.log('connection');
-	
+
 	socket.on('rejoint', function(pseudo) {
 		console.log('Un joueur rejoint');
 		if (pseudo == partie.joueurs[0].pseudo) {
@@ -70,7 +70,16 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('clic', function(joueur, pos) {
 		console.log('clic - serveur');
-		socket.emit('clic', joueur, pos);
+		if (socket.attenteCible == 1) {
+			socket.attenteCible == 0;
+			if(socket.ciblesPossibles[joueur, pos]) {
+				cibleChoisie = [joueur, pos];
+				carte.effet(cibleChoisie);
+			}
+			else {
+				socket.emit('message', 'La cible n\'est pas valide');
+			}
+		}
 	});
 
 	socket.on('recup', function() {
@@ -81,7 +90,9 @@ io.sockets.on('connection', function (socket) {
 	socket.on('carteJouee', function(carte, cible) {
 		console.log('carteJouee - serveur');
 		// TODO : PHASE DE DEPLACEMENT PRES LANCEMENT DU SORT
-		carte.effet(cible);
+		
+		// TODO : LANCEMENT DU SORT
+		// carte.effet(cible);
 
 		// Défausse du sort joué
 		var indexCarte = partie.joueurs[socket.iCourant].main.indexOf(carte);
@@ -89,9 +100,18 @@ io.sockets.on('connection', function (socket) {
 		partie.joueurs[socket.iCourant].main.splice(indexCarte, 1);
 	});
 
+	socket.on('attenteCible', function(ciblesPossibles, carte) {
+		socket.attenteCible = 1;
+		socket.ciblesPossibles = ciblesPossibles;
+		socket.carteEnCours = carte;
+	});
+
 });
 
+// La ligne de la galaxie qui nous permet de tout trouver =3 !
+app.use(express.static(__dirname + "/ressources"));
 
+// Le serveur écoute sur le port indiqué
 server.listen(8080);
 
 // SANDBOX pour faire tourner le reste

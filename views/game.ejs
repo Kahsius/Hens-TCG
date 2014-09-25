@@ -4,7 +4,8 @@
 		<title>D-D-D-Duel !!!</title>
 		<link rel="stylesheet" type="text/css" href="/view/css/game.css">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="/modules_persos/actions_client.js"></script>
+		<script type="text/javascript" src="./actions_client.js"></script>
+		<script type="text/javascript" src="./composants.js"></script>
 	</head>
 
 	<body>
@@ -49,7 +50,7 @@
 		for(var j=0;j<2;j++){
 			for(var i = 0;i< nbCases;i++){
 		%>
-				<a   href="#" onClick="CaseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ></a>
+				<a   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ></a>
 		<% } 
 		}
 		%>
@@ -57,8 +58,8 @@
 		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='var carte = creerCarteBidon(); jouer(carte)'/>
 		<script type="text/javascript">
 
-		function CaseClic(indiceCase,joueur){ 
-			alert("case "+indiceCase+" du joueur "+joueur+".");
+		function caseClic(indiceCase,joueur){ 
+			console.log("case "+indiceCase+" du joueur "+joueur+".");
 			socket.emit('clic', joueur, indiceCase);
 		}
 
@@ -91,6 +92,10 @@
 			 	console.log('placements choisis : ' + placements[0] + placements[1] + placements[2]);
 			 	socket.emit('placementFini', indice, placements);
 			 });
+
+			 socket.on('message', function(message) {
+			 	console.log(message);
+			 })
 
 		</script>
 	</body>

@@ -103,6 +103,7 @@ function creerTerrain() {
 }
 
 function creerCarteBidon() {
+	// Effet (cibleFinale, ciblesLegales, aoe, nombre, estActive, estDeclenche, duree, portee, sort)
 	var effet = new Effet (null, [1,0], 0, 1, 0, 0, 0, 2, (function() { alert('Ca fontionne !'); }));
 	var carte = new Carte ('yolo1', 'Super-Yolo', effet);
 	return carte;
