@@ -36,7 +36,7 @@ console.log('jouer');
 */
 function cible(ID, pos, carte) {
 	console.log('cible');
-	var ciblesPossibles = new Array(2,5);
+	var ciblesPossibles = new Array();
 
 	// Analyse des cibles à fournir
 	// CAS 1 : la cible est prédeterminée par le sort
@@ -50,7 +50,7 @@ function cible(ID, pos, carte) {
 		for (var i = 0; i < 2; i++) {
 			for (var j = 0; j < 5; j++) {
 				// console.log('ciblesPossibles[i,j] = 1 + ' + portee([i,j], [ID,pos], carte.effet.portee) + ' + ' + duBonCote(i, ID, carte.effet.ciblesLegales));
-				ciblesPossibles[i,j] = 1 + portee([i,j], [ID,pos], carte.effet.portee) + duBonCote(i, ID, carte.effet.ciblesLegales);
+				ciblesPossibles[i,j] = 1 + portee(i, j, ID, pos, carte.effet.portee) + duBonCote(i, ID, carte.effet.ciblesLegales);
 			}
 			console.log('1/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i,0] + ciblesPossibles[i,1] + ciblesPossibles[i,2] + ciblesPossibles[i,3] + ciblesPossibles[i,4]);
 		}
@@ -77,7 +77,7 @@ function cible(ID, pos, carte) {
 }
 
 // Retourne 1 si à portée, 0 sinon
-function portee([i,j], [monID,pos], portee) {
+function portee(i, j, monID, pos, portee) {
 	console.log('portee');
 	var distance = Math.abs(j-pos);
 	if (i != monID) { distance++; }
