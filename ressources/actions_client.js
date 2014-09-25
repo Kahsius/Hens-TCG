@@ -200,7 +200,10 @@ function melange(deck) {
 	}
 }
 
-function testActions() {}
+function caseClic(indiceCase,joueur){ 
+	console.log("case "+indiceCase+" du joueur "+joueur+".");
+	socket.emit('clic', joueur, indiceCase);
+}
 
 /*
 Pas besoin si lancé dans un html

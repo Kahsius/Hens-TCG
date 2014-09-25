@@ -59,18 +59,10 @@
 		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='socket.emit("carteChoisie", 0)'/>
 		<script type="text/javascript">
 
-			function caseClic(indiceCase,joueur){ 
-				console.log("case "+indiceCase+" du joueur "+joueur+".");
-				socket.emit('clic', joueur, indiceCase);
-			}
-
 			console.log("Le js se lance bien");
 			var socket = io.connect('http://localhost:8080');
-			// var pseudo = prompt('Votre pseudo ?');
-
-			// On envoie le pseudo pour vérifier si tout est bon
-			// socket.emit('rejoint', pseudo);
 			socket.emit('rejoint');
+			
 			socket.on('rejointOK', function(pseudo, iCourant){
 				console.log('rejointOK');
 				document.title = pseudo + ' - ' + document.title;
