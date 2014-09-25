@@ -55,13 +55,14 @@
 		}
 		%>
 		</div>
-		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='var carte = creerCarteBidon(); jouer(carte)'/>
+		<!-- Le 0 dans le socket.emit sera remplacé pour chaque carte par sa position dans la main -->
+		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='socket.emit("carteChoisie", 0)'/>
 		<script type="text/javascript">
 
-		function caseClic(indiceCase,joueur){ 
-			console.log("case "+indiceCase+" du joueur "+joueur+".");
-			socket.emit('clic', joueur, indiceCase);
-		}
+			function caseClic(indiceCase,joueur){ 
+				console.log("case "+indiceCase+" du joueur "+joueur+".");
+				socket.emit('clic', joueur, indiceCase);
+			}
 
 			console.log("Le js se lance bien");
 			 var socket = io.connect('http://localhost:8080');
@@ -78,8 +79,7 @@
 
 			 socket.on('rejointNOK', function() {
 			 	console.log('rejointNOK');
-			 	pseudo = prompt('Votre pseudo ?');
-			 	socket.emit('rejoint', pseudo);
+			 	console.log('échec de la connection à la partie');
 			 });
 
 			 socket.on('placements', function(indice, persos) {
@@ -96,7 +96,11 @@
 
 			 socket.on('message', function(message) {
 			 	console.log(message);
-			 })
+			 });
+
+			 socket.on('carteAJouer', function(carte) {
+			 	jouer(carte);
+			 });
 
 		</script>
 	</body>

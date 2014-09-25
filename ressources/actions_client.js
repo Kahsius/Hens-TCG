@@ -36,7 +36,7 @@ console.log('jouer');
 */
 function cible(ID, pos, carte) {
 	console.log('cible');
-	var ciblesPossibles = new Array();
+	var ciblesPossibles = [];
 
 	// Analyse des cibles à fournir
 	// CAS 1 : la cible est prédeterminée par le sort
@@ -48,31 +48,32 @@ function cible(ID, pos, carte) {
 	else {
 		// Calcul de la valeur de chaque case
 		for (var i = 0; i < 2; i++) {
+			ciblesPossibles[i] = [];
 			for (var j = 0; j < 5; j++) {
-				// console.log('ciblesPossibles['+i+','+j+'] = 1 + ' + portee(i, j, ID, pos, carte.effet.portee) + ' + ' + duBonCote(i, ID, carte.effet.ciblesLegales));
-				ciblesPossibles[i,j] = 1 + portee(i, j, ID, pos, carte.effet.portee) + duBonCote(i, ID, carte.effet.ciblesLegales);
+				ciblesPossibles[i][j] = 1 + portee(i, j, ID, pos, carte.effet.portee) + duBonCote(i, ID, carte.effet.ciblesLegales);
 			}
-			console.log('1/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i,0] + ciblesPossibles[i,1] + ciblesPossibles[i,2] + ciblesPossibles[i,3] + ciblesPossibles[i,4]);
+			console.log('1/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i][0] + ciblesPossibles[i][1] + ciblesPossibles[i][2] + ciblesPossibles[i][3] + ciblesPossibles[i][4]);
 		}
 
 		// Obtention des cases finales
 		for (i = 0; i < 2; i++) {
-			console.log('2/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i,0] + ciblesPossibles[i,1] + ciblesPossibles[i,2] + ciblesPossibles[i,3] + ciblesPossibles[i,4]);
+			console.log('2/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i][0] + ciblesPossibles[i][1] + ciblesPossibles[i][2] + ciblesPossibles[i][3] + ciblesPossibles[i][4]);
 		}
 		var max = maxTab(ciblesPossibles);
 		for (i = 0; i < 2; i++) {
 			for (j = 0; j < 5; j++) {
-				ciblesPossibles[i,j] = Math.floor(ciblesPossibles[i,j] / max);
-				console.log(ciblesPossibles[i,j]);
+				ciblesPossibles[i][j] = Math.floor(ciblesPossibles[i][j] / max);
 			}
+			console.log('ciblesPossibles['+i+',x] normalisé : ' + ciblesPossibles[i][0] + ciblesPossibles[i][1] + ciblesPossibles[i][2] + ciblesPossibles[i][3] + ciblesPossibles[i][4]);
 		}
 
 		console.log('Tableau de cibles défini, en attente du clic');
 
 		// A ce stade là, on a un joli tableau avec plein de 1 et de 0 qui indique quelles cases on peut cibler
 		// On attend que l'utilisateur clic sur la cible et on vérifie si elle est valable
+		var effetIntermediaire = carte.effet;
 
-		socket.emit('attenteCible', ciblesPossibles, carte);
+		socket.emit('attenteCible', ciblesPossibles, carte, effetIntermediaire);
 	}
 }
 
@@ -101,7 +102,7 @@ function maxTab(tab) {
 	var max = 0;
 	for (var i = 0; i < 2; i++) {
 		for (var j = 0; j < 5; j++) {
-			if (tab[i,j] > max) { max = tab[i,j]; }
+			if (tab[i][j] > max) { max = tab[i][j]; }
 		}
 	}
 	console.log('Max du tableau : ' + max);
@@ -208,7 +209,6 @@ function melange(deck) {
 function testActions() {}
 
 /*
-
 Pas besoin si lancé dans un html
 
 exports.cible = cible;

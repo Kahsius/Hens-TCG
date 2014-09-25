@@ -86,10 +86,18 @@ io.sockets.on('connection', function (socket) {
 	socket.on('clic', function(joueur, pos) {
 		console.log('clic - serveur');
 		if (socket.attenteCible == 1) {
-			socket.attenteCible == 0;
-			if(socket.ciblesPossibles[joueur, pos]) {
-				cibleChoisie = [joueur, pos];
-				carte.effet(cibleChoisie);
+			if(socket.ciblesPossibles[joueur][pos]) {
+				// TODO : phase de déplacement avant lancement du sort
+				socket.attenteCible = 0;
+				cibleChoisie = [joueur][pos];
+				console.log('effet appliqué');
+				socket.carteEnCours.effet.arcane(cibleChoisie);
+				// TODO : enlever la carte de la main du joueur
+				/*
+					var indexCarte = partie.joueurs[socket.iCourant].main.indexOf(carte);
+					partie.joueurs[socket.iCourant].defausse.push(joueur.main[indexCarte]); 
+					partie.joueurs[socket.iCourant].main.splice(indexCarte, 1);
+				*/
 			}
 			else {
 				socket.emit('message', 'La cible n\'est pas valide');
@@ -102,23 +110,14 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('recup', socket.iCourant, partie);
 	});
 
-	socket.on('carteJouee', function(carte, cible) {
-		console.log('carteJouee - serveur');
-		// TODO : PHASE DE DEPLACEMENT PRES LANCEMENT DU SORT
-		
-		// TODO : LANCEMENT DU SORT
-		// carte.effet(cible);
-
-		// Défausse du sort joué
-		var indexCarte = partie.joueurs[socket.iCourant].main.indexOf(carte);
-		partie.joueurs[socket.iCourant].defausse.push(joueur.main[indexCarte]); 
-		partie.joueurs[socket.iCourant].main.splice(indexCarte, 1);
+	socket.on('carteChoisie', function(index) {
+		socket.carteEnCours = partie.joueurs[socket.iCourant].main[index];
+		socket.emit('carteAJouer', socket.carteEnCours);
 	});
 
-	socket.on('attenteCible', function(ciblesPossibles, carte) {
+	socket.on('attenteCible', function(ciblesPossibles, carte, effet) {
 		socket.attenteCible = 1;
 		socket.ciblesPossibles = ciblesPossibles;
-		socket.carteEnCours = carte;
 	});
 
 });

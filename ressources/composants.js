@@ -16,8 +16,8 @@ function Joueur (pseudo,  perso1, perso2, perso3, deck) {
 	this.pseudo = pseudo;
 	this.persos = [ perso1, perso2, perso3 ];
 	this.deck = deck;
-	this.main = new Array();
-	this.defausse = new Array();
+	this.main = [];
+	this.defausse = [];
 }
 
 function Deck (listeCartes) {
@@ -52,12 +52,12 @@ function Case (pos, perso, effet) {
 	this.effet = effet;
 }
 
-function Effet (cibleFinale, ciblesLegales, aoe, nombre, estActive, estDeclenche, duree, portee, sort) {
+function Effet (cibleFinale, ciblesLegales, aoe, nombre, estActive, estDeclenche, duree, portee, arcane) {
 	// Partie pour les cibles
 	this.cibleFinale = cibleFinale;			// le plus souvent null puisqu'elle viendra après
 	this.ciblesLegales = ciblesLegales; 	// = [booléen ennemi, booléen allié]
-	this.aoe;
-	this.nombre;
+	this.aoe = aoe;
+	this.nombre = nombre;
 
 	// Partie pour l'effet
 	this.estActive = estActive;
@@ -66,16 +66,16 @@ function Effet (cibleFinale, ciblesLegales, aoe, nombre, estActive, estDeclenche
 	this.portee = portee;		// 0 si aoe
 
 	// La fonction d'effet a proprement parler
-	this.sort = sort;		// n'a besoin que de sa cible pour fonctionner, le reste est géré en amont
+	this.arcane = arcane;		// n'a besoin que de sa cible pour fonctionner, le reste est géré en amont
 }
 
 function creerJoueursBidons () {
 	// Création de la carte bidon
-	var carte = new Carte("yolo", "youpi", new Effet (1,1,1));
+	var carte = new Carte("yolo", "youpi", new Effet ());
 	// Création du perso bidon
-	var yolo1 = new Perso("yolo1", "swag", 1000, new Effet (1,1,1), 0);
-	var yolo2 = new Perso("yolo2", "swag", 1000, new Effet (1,1,1), 0);
-	var yolo3 = new Perso("yolo3", "swag", 1000, new Effet (1,1,1), 0);
+	var yolo1 = new Perso("yolo1", "swag", 1000, new Effet (), 0);
+	var yolo2 = new Perso("yolo2", "swag", 1000, new Effet (), 0);
+	var yolo3 = new Perso("yolo3", "swag", 1000, new Effet (), 0);
 	// Création du deck bidon
 	var deck = new Deck([]);
 	for(var i = 0; i < 30; i++) {
@@ -84,6 +84,9 @@ function creerJoueursBidons () {
 	// Création des deux joueurs bidons avec tout ce qu'il y a au dessus
 	var jojo = new Joueur("jojo", yolo1, yolo2, yolo3, deck, [], []);
 	var toto = new Joueur("toto", yolo1, yolo2, yolo3, deck, [], []);
+	var carte = creerCarteBidon();
+	jojo.main.push(carte);
+	toto.main.push(carte);
 
 	// On retourne ce qu'il faut
 	return [jojo, toto];
@@ -104,7 +107,7 @@ function creerTerrain() {
 
 function creerCarteBidon() {
 	// Effet (cibleFinale, ciblesLegales, aoe, nombre, estActive, estDeclenche, duree, portee, sort)
-	var effet = new Effet (null, [1,0], 0, 1, 0, 0, 0, 2, (function() { alert('Ca fontionne !'); }));
+	var effet = new Effet (null, [1,0], 0, 1, 0, 0, 0, 2, (function(cible) { console.log('Ca fontionne !'); }));
 	var carte = new Carte ('yolo1', 'Super-Yolo', effet);
 	return carte;
 }
