@@ -19,23 +19,38 @@ app.get('/game', function (req, res) {
 io.sockets.on('connection', function (socket) {
 	console.log('connection');
 
-	socket.on('rejoint', function(pseudo) {
+	socket.on('rejoint', function() {
+		nombreDeJoueurs++;
+		var pseudo;
+
+
+		//Partie bidouille à modifier dans la version finale au niveau de l'arrivée des joueurs
+		if (nombreDeJoueurs == 1) {
+			pseudo = 'jojo';
+		}
+		else if (nombreDeJoueurs == 2 ) {
+			pseudo = 'toto';
+		}
+		else {
+			pseudo = 'surcharge';
+		}
+		// Fin de la bidouille
+
+
 		console.log('Un joueur rejoint');
 		if (pseudo == partie.joueurs[0].pseudo) {
 			// iCourant et iAdverse = indice du joueur partie.joueurs[0] = 0 et partie.joueurs[1] = 1
 			// 0 et 1 plutôt que 1 et 2 pour chercher plus facilement dans des tableaux
 			socket.iCourant = 0;
 			socket.iAdverse = 1;
-			nombreDeJoueurs++;
 			console.log("Nombre de joueurs : " + nombreDeJoueurs);
-			socket.emit('rejointOK');
+			socket.emit('rejointOK', pseudo);
 		}
 		else if (pseudo == partie.joueurs[1].pseudo) {
 			socket.iCourant = 1;
 			socket.iAdverse = 0;
-			nombreDeJoueurs++;
 			console.log("Nombre de joueurs : " + nombreDeJoueurs);
-			socket.emit('rejointOK');
+			socket.emit('rejointOK', pseudo);
 		}
 		else {
 			socket.emit('rejointNOK');

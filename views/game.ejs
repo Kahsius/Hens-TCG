@@ -65,11 +65,12 @@
 
 			console.log("Le js se lance bien");
 			 var socket = io.connect('http://localhost:8080');
-			 var pseudo = prompt('Votre pseudo ?');
+			 // var pseudo = prompt('Votre pseudo ?');
 
 			 // On envoie le pseudo pour vérifier si tout est bon
-			 socket.emit('rejoint', pseudo);
-			 socket.on('rejointOK', function(){
+			 // socket.emit('rejoint', pseudo);
+			 socket.emit('rejoint');
+			 socket.on('rejointOK', function(pseudo){
 			 	console.log('rejointOK');
 				document.title = pseudo + ' - ' + document.title;
 				socket.emit('rejointFini');			 	

@@ -49,7 +49,7 @@ function cible(ID, pos, carte) {
 		// Calcul de la valeur de chaque case
 		for (var i = 0; i < 2; i++) {
 			for (var j = 0; j < 5; j++) {
-				// console.log('ciblesPossibles[i,j] = 1 + ' + portee([i,j], [ID,pos], carte.effet.portee) + ' + ' + duBonCote(i, ID, carte.effet.ciblesLegales));
+				// console.log('ciblesPossibles['+i+','+j+'] = 1 + ' + portee(i, j, ID, pos, carte.effet.portee) + ' + ' + duBonCote(i, ID, carte.effet.ciblesLegales));
 				ciblesPossibles[i,j] = 1 + portee(i, j, ID, pos, carte.effet.portee) + duBonCote(i, ID, carte.effet.ciblesLegales);
 			}
 			console.log('1/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i,0] + ciblesPossibles[i,1] + ciblesPossibles[i,2] + ciblesPossibles[i,3] + ciblesPossibles[i,4]);
