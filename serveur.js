@@ -1,12 +1,18 @@
-var express = require('express');
-var app = express(),
+// Appel du fichier de constantes
+var constantes = require('./ressources/constantes');
+
+// Définition des composants dont on aura besoin
+var express = require('express'),
+app = express(),
 server = require('http').createServer(app),
 io = require('socket.io').listen(server),
 fs = require('fs'),
 composants = require('./ressources/composants');
 
+// Le compteur de joueur pour savoir quand les deux joueurs sont là
 var nombreDeJoueurs = 0;
 
+// Les variables principales du programme
 var j1 = composants.creerJoueursBidons()[0];
 var j2 = composants.creerJoueursBidons()[1];
 var terrain = composants.creerTerrain();
@@ -44,13 +50,13 @@ io.sockets.on('connection', function (socket) {
 			socket.iCourant = 0;
 			socket.iAdverse = 1;
 			console.log("Nombre de joueurs : " + nombreDeJoueurs);
-			socket.emit('rejointOK', pseudo);
+			socket.emit('rejointOK', pseudo, socket.iCourant);
 		}
 		else if (pseudo == partie.joueurs[1].pseudo) {
 			socket.iCourant = 1;
 			socket.iAdverse = 0;
 			console.log("Nombre de joueurs : " + nombreDeJoueurs);
-			socket.emit('rejointOK', pseudo);
+			socket.emit('rejointOK', pseudo, socket.iCourant);
 		}
 		else {
 			socket.emit('rejointNOK');
@@ -60,11 +66,20 @@ io.sockets.on('connection', function (socket) {
 	socket.on('rejointFini', function() {
 		console.log('rejointFini : iCourant == ' + socket.iCourant);
 		if ( nombreDeJoueurs == 2 ) {
-			if (socket.iCourant == 0) {
-				socket.emit('placements', socket.iCourant, partie.joueurs[socket.iCourant].persos);
+			if (constantes.debugPlacements) {
+				for (var i = 0; i < 3; i ++) {
+					// attribut au i eme perso la case i (cf composants.js pour structure de terrain)
+					partie.joueurs[0].persos[i].caseTerrain = terrain.listeCases[0][constantes.placementsJ1[i]-1];
+					partie.joueurs[1].persos[i].caseTerrain = terrain.listeCases[1][constantes.placementsJ2[i]-1];
+				}
 			}
 			else {
-				socket.broadcast.emit('placements', socket.iAdverse, partie.joueurs[socket.iCourant].persos);
+				if (socket.iCourant == 0) {
+					socket.emit('placements', socket.iCourant, partie.joueurs[socket.iCourant].persos);
+				}
+				else {
+					socket.broadcast.emit('placements', socket.iAdverse, partie.joueurs[socket.iCourant].persos);
+				}
 			}
 		}
 	});
@@ -85,10 +100,10 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('clic', function(joueur, pos) {
 		console.log('clic - serveur');
-		if (socket.attenteCible == 1) {
+		if (socket.attenteCible == true) {
 			if(socket.ciblesPossibles[joueur][pos]) {
 				// TODO : phase de déplacement avant lancement du sort
-				socket.attenteCible = 0;
+				socket.attenteCible = false;
 				cibleChoisie = [joueur][pos];
 				console.log('effet appliqué');
 				socket.carteEnCours.effet.arcane(cibleChoisie);
@@ -115,8 +130,8 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('carteAJouer', socket.carteEnCours);
 	});
 
-	socket.on('attenteCible', function(ciblesPossibles, carte, effet) {
-		socket.attenteCible = 1;
+	socket.on('attenteCible', function(ciblesPossibles) {
+		socket.attenteCible = true;
 		socket.ciblesPossibles = ciblesPossibles;
 	});
 

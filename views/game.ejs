@@ -65,42 +65,44 @@
 			}
 
 			console.log("Le js se lance bien");
-			 var socket = io.connect('http://localhost:8080');
-			 // var pseudo = prompt('Votre pseudo ?');
+			var socket = io.connect('http://localhost:8080');
+			// var pseudo = prompt('Votre pseudo ?');
 
-			 // On envoie le pseudo pour vérifier si tout est bon
-			 // socket.emit('rejoint', pseudo);
-			 socket.emit('rejoint');
-			 socket.on('rejointOK', function(pseudo){
-			 	console.log('rejointOK');
+			// On envoie le pseudo pour vérifier si tout est bon
+			// socket.emit('rejoint', pseudo);
+			socket.emit('rejoint');
+			socket.on('rejointOK', function(pseudo, iCourant){
+				console.log('rejointOK');
 				document.title = pseudo + ' - ' + document.title;
+				socket.iCourant = iCourant;
+				socket.iAdverse = (iCourant+1)%2;
 				socket.emit('rejointFini');			 	
-			 });
+			});
 
-			 socket.on('rejointNOK', function() {
-			 	console.log('rejointNOK');
-			 	console.log('échec de la connection à la partie');
-			 });
+			socket.on('rejointNOK', function() {
+				console.log('rejointNOK');
+				console.log('échec de la connection à la partie');
+			});
 
-			 socket.on('placements', function(indice, persos) {
-			 	console.log('placements');
-			 	var placements = new Array(3);
-			 	for ( var i = 0; i < 3; i ++) {
-			 		do {
-			 			placements[i] = prompt('Quelle position pour ' + persos[i].nom + " ?");
-			 		} while (placements[i] < 1 || placements[i] > 5);
-			 	}
-			 	console.log('placements choisis : ' + placements[0] + placements[1] + placements[2]);
-			 	socket.emit('placementFini', indice, placements);
-			 });
+			socket.on('placements', function(indice, persos) {
+				console.log('placements');
+				var placements = [];
+				for ( var i = 0; i < 3; i ++) {
+					do {
+						placements[i] = prompt('Quelle position pour ' + persos[i].nom + " ?");
+					} while (placements[i] < 1 || placements[i] > 5);
+				}
+				console.log('placements choisis : ' + placements[0] + placements[1] + placements[2]);
+				socket.emit('placementFini', indice, placements);
+			});
 
-			 socket.on('message', function(message) {
-			 	console.log(message);
-			 });
+			socket.on('message', function(message) {
+				console.log(message);
+			});
 
-			 socket.on('carteAJouer', function(carte) {
-			 	jouer(carte);
-			 });
+			socket.on('carteAJouer', function(carte) {
+				jouer(carte);
+			});
 
 		</script>
 	</body>

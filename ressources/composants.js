@@ -43,8 +43,8 @@ function Carte (nomPerso, nom, effet ) {
 
 function Terrain (listeCases) {
 	this.listeCases = listeCases;
-	this.effetsDeclenches = new Array();
-	this.effetsPermanents = new Array();
+	this.effetsDeclenches = [];
+	this.effetsPermanents = [];
 }
 
 function Case (pos, perso, effet) {
@@ -93,11 +93,12 @@ function creerJoueursBidons () {
 }
 
 function creerTerrain() {
-	var listeCases = new Array(2,5);
+	var listeCases = [];
 
 	for (var i = 0; i < 2; i ++) { 							// i représente le joueur
+		listeCases[i] = [];
 		for (var j = 0; j < 5; j ++) {						// j représente la position de la case
-			listeCases[i,j] = new Case (j, null);		// listeCases[i,j] = listeCases[joueur,pos]
+			listeCases[i][j] = new Case (j, null);		// listeCases[i][j] = listeCases[joueur][pos]
 		}
 	}
 	// On crée le terrain à partir du tableau de cases précédent

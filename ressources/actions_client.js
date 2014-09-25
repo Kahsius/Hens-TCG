@@ -50,15 +50,13 @@ function cible(ID, pos, carte) {
 		for (var i = 0; i < 2; i++) {
 			ciblesPossibles[i] = [];
 			for (var j = 0; j < 5; j++) {
+				console.log('portee -> carte.effet.portee : '+carte.effet.portee + ', pos : '+pos+', socket.iCourant : '+socket.iCourant);
 				ciblesPossibles[i][j] = 1 + portee(i, j, ID, pos, carte.effet.portee) + duBonCote(i, ID, carte.effet.ciblesLegales);
 			}
-			console.log('1/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i][0] + ciblesPossibles[i][1] + ciblesPossibles[i][2] + ciblesPossibles[i][3] + ciblesPossibles[i][4]);
+			console.log('ciblesPossibles['+i+',x] = ' + ciblesPossibles[i][0] + ciblesPossibles[i][1] + ciblesPossibles[i][2] + ciblesPossibles[i][3] + ciblesPossibles[i][4]);
 		}
 
 		// Obtention des cases finales
-		for (i = 0; i < 2; i++) {
-			console.log('2/ ciblesPossibles['+i+',x] = ' + ciblesPossibles[i][0] + ciblesPossibles[i][1] + ciblesPossibles[i][2] + ciblesPossibles[i][3] + ciblesPossibles[i][4]);
-		}
 		var max = maxTab(ciblesPossibles);
 		for (i = 0; i < 2; i++) {
 			for (j = 0; j < 5; j++) {
@@ -71,15 +69,12 @@ function cible(ID, pos, carte) {
 
 		// A ce stade là, on a un joli tableau avec plein de 1 et de 0 qui indique quelles cases on peut cibler
 		// On attend que l'utilisateur clic sur la cible et on vérifie si elle est valable
-		var effetIntermediaire = carte.effet;
-
-		socket.emit('attenteCible', ciblesPossibles, carte, effetIntermediaire);
+		socket.emit('attenteCible', ciblesPossibles);
 	}
 }
 
 // Retourne 1 si à portée, 0 sinon
 function portee(i, j, monID, pos, portee) {
-	console.log('portee');
 	var distance = Math.abs(j-pos);
 	if (i != monID) { distance++; }
 	if (distance > portee) { return 0; }
@@ -88,7 +83,6 @@ function portee(i, j, monID, pos, portee) {
 
 // Retourne la valeur du champ correspondant au côté de la case par rapport à l'effet du sort
 function duBonCote(i, ID, ciblesLegales) {
-	console.log('duBonCote');
 	if ( i == ID ) {
 		return ciblesLegales[1];
 	}
