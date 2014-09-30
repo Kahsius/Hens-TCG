@@ -71,6 +71,8 @@ io.sockets.on('connection', function (socket) {
 					// attribut au i eme perso la case i (cf composants.js pour structure de terrain)
 					partie.joueurs[0].persos[i].caseTerrain = terrain.listeCases[0][constantes.placementsJ1[i]-1];
 					partie.joueurs[1].persos[i].caseTerrain = terrain.listeCases[1][constantes.placementsJ2[i]-1];
+					pioche(partie.joueurs[0], 5);
+					pioche(partie.joueurs[1], 5);
 				}
 			}
 			else {
@@ -96,6 +98,10 @@ io.sockets.on('connection', function (socket) {
 		if(indice == 0) {
 			socket.broadcast.emit('placements', 1, partie.joueurs[socket.iAdverse].persos);
 		}
+		if(indice == 1) {
+			pioche(partie.joueurs[0], 5);
+			pioche(partie.joueurs[1], 5);
+		}
 	});
 
 	socket.on('clic', function(joueur, pos) {
@@ -106,7 +112,7 @@ io.sockets.on('connection', function (socket) {
 				socket.attenteCible = false;
 				cibleChoisie = [joueur][pos];
 				console.log('effet appliqué');
-				socket.carteEnCours.effet.arcane(cibleChoisie);
+				socket.carteEnCours.effet.arcane(partie, cibleChoisie);
 				// TODO : enlever la carte de la main du joueur
 				/*
 					var indexCarte = partie.joueurs[socket.iCourant].main.indexOf(carte);

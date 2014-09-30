@@ -18,6 +18,7 @@ function Joueur (pseudo,  perso1, perso2, perso3, deck) {
 	this.deck = deck;
 	this.main = [];
 	this.defausse = [];
+	this.sortGratuit = false;
 }
 
 function Deck (listeCartes) {
@@ -25,7 +26,7 @@ function Deck (listeCartes) {
 	this.taille = listeCartes.length;
 }
 
-function Perso (nom, village, pv, pouvoir, caseTerrain) {
+function Perso (nom, village, pv, pouvoir, caseTerrain, bouclier) {
 	this.nom = nom;	
 	this.village = village;
 	this.pvInit = pv;
@@ -33,6 +34,7 @@ function Perso (nom, village, pv, pouvoir, caseTerrain) {
 	this.pouvoirInit = pouvoir;
 	this.pouvoir = pouvoir;
 	this.caseTerrain = caseTerrain
+	this.bouclier = bouclier
 }	
 
 function Carte (nomPerso, nom, effet ) {
@@ -70,23 +72,29 @@ function Effet (cibleFinale, ciblesLegales, aoe, nombre, estActive, estDeclenche
 }
 
 function creerJoueursBidons () {
-	// Création de la carte bidon
-	var carte = new Carte("yolo", "youpi", new Effet ());
 	// Création du perso bidon
-	var yolo1 = new Perso("yolo1", "swag", 1000, new Effet (), 0);
-	var yolo2 = new Perso("yolo2", "swag", 1000, new Effet (), 0);
-	var yolo3 = new Perso("yolo3", "swag", 1000, new Effet (), 0);
+	var yolo1 = new Perso("yolo1", "swag", 1000, new Effet (), 0, 0);
+	var yolo2 = new Perso("yolo2", "swag", 1000, new Effet (), 0, 0);
+	var yolo3 = new Perso("yolo3", "swag", 1000, new Effet (), 0, 0);
+
 	// Création du deck bidon
 	var deck = new Deck([]);
 	for(var i = 0; i < 30; i++) {
+		// Histoire d'avoir 30 cartes "différentes"
+		var carte = new Carte("yolo1", "yoloCarte"+i, new Effet());
 		deck.listeCartes.push(carte);
 	}
+
 	// Création des deux joueurs bidons avec tout ce qu'il y a au dessus
 	var jojo = new Joueur("jojo", yolo1, yolo2, yolo3, deck, [], []);
 	var toto = new Joueur("toto", yolo1, yolo2, yolo3, deck, [], []);
+	
+	// On fait juste ça pour pouvoir tester la fonction jouer(), à enlever dès que l'on aura fait
+	// l'initialisation des joueurs
 	var carte = creerCarteBidon();
 	jojo.main.push(carte);
 	toto.main.push(carte);
+
 
 	// On retourne ce qu'il faut
 	return [jojo, toto];

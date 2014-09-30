@@ -103,7 +103,11 @@ function maxTab(tab) {
 	return max;
 }
 
-//AR
+
+/*
+	A partir d'ici, on va avoir tous les effets possibles pour une carte
+*/
+
 function pioche(joueur, n) {
 	for (var i = 0; i < n; i++) {
 		joueur.main.push(joueur.deck[0]);
@@ -111,7 +115,7 @@ function pioche(joueur, n) {
 	}
 }
 
-//AR
+
 function degats(joueur, perso, n) {
 	perso.pv = perso.pv - n;
 	if (perso.pv <= 0) {
@@ -119,7 +123,7 @@ function degats(joueur, perso, n) {
 	}
 }
 
-//AR
+
 function defausse(socket, joueur, n) {
 	var choix;
 	for (var i = 0; i < n; i++) {
@@ -129,7 +133,7 @@ function defausse(socket, joueur, n) {
 	}
 }
 
-//AR
+
 function defausseAleatoire(joueur, n) {
 	var choix;
 	for (var i = 0; i < n; i++) {
@@ -139,13 +143,20 @@ function defausseAleatoire(joueur, n) {
 	}
 }
 
-//AR
+
 function deplace(joueur, perso, droite) { // droite est un booleen pour dire si on va à droite (1) ou à gauche (0)
 	var posActuelle = perso.caseTerrain.pos;
 	var deplacement;
 
-	if (droite) { deplacement = 1 }
-	else { deplacement = -1 }
+	if (droite && perso.caseTerrain.pos + 1 < 4) { 
+		deplacement = 1; 
+	}
+	else if (!droite && perso.caseTerrain.pos - 1 > -1) { 
+		deplacement = -1; 
+	}
+	else {
+		deplacement = 0;
+	}
 
 	for (var i =  0; i < joueur.persos.length; i++) {
 		if (joueur.persos[i].caseTerrain.pos == posActuelle + deplacement) {
@@ -158,15 +169,14 @@ function deplace(joueur, perso, droite) { // droite est un booleen pour dire si 
 	}
 }
 
-//AR
+
 function soigne(perso, n) {
-	perso.pv = perso.pv + n;
 	if (perso.pv > perso.pvInit) {
-		perso.pv = perso.pvInit;
+		perso.pv = Math.min(perso.pvInit, perso.pv + n);
 	}
 }
 
-//AR
+
 function detruitPerso(joueur, perso) {
 	
 	// Partie terrain
@@ -177,20 +187,19 @@ function detruitPerso(joueur, perso) {
 
 	// Partie main
 	for (var i = joueur.main.length; i > -1; i--) {
-		if (joueur.main[index-1].nomPerso == perso.nom) {
-			joueur.main.splice(index-1,1);
+		if (joueur.main[i-1].nomPerso == perso.nom) {
+			joueur.main.splice(i-1,1);
 		}
 	}
 
 	// Partie deck
-	for (var i = joueur.deck.length; i > -1; i--) {
-		if (joueur.deck[index-1].nomPerso == perso.nom) {
-			joueur.deck.splice(index-1,1);
+	for (i = joueur.deck.length; i > -1; i--) {
+		if (joueur.deck[i-1].nomPerso == perso.nom) {
+			joueur.deck.splice(i-1,1);
 		}
 	}
 }
 
-//AR
 function melange(deck) {
 	for ( var i = deck.length-1; i >= 1; position--) {
 		var hasard = Math.floor(Math.random()*(i+1));
@@ -199,6 +208,31 @@ function melange(deck) {
 		deck[hasard] = save;	
 	}
 }
+
+function pouvoir(perso, n) {
+	perso.pouvoir += n;
+}
+
+function bouclier (perso, n) {
+	perso.pouvoir += n;
+}
+
+function sortGratuit (joueur) {
+	joueur.sortGratuit = true;
+}
+
+function modifPortee (perso, n) {
+	// Dans le cas où la portée serait négative
+	perso.portee = Math.max(perso.portee + n, 0);
+}
+
+function vision (deck, n) {
+	// TODO
+}
+
+
+
+
 
 function caseClic(indiceCase,joueur){ 
 	console.log("case "+indiceCase+" du joueur "+joueur+".");
