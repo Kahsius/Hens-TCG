@@ -41,9 +41,6 @@
 	-webkit-transform:scale(1.1);
 }
 </style>
-		<% function number(i,j){ %>
-		<p> <%=i %>
-		<% } %>
 		<header>
 			HENS TCG OP POPO
 		</header>
@@ -53,7 +50,7 @@
 		for(var j=0;j<2;j++){
 			for(var i = 0;i< nbCases;i++){
 		%>
-				<a   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ><% number(i) %></a>
+				<a   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ></a>
 		<% } 
 		}
 		%>
