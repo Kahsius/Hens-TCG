@@ -50,7 +50,6 @@ function cible(ID, pos, carte) {
 		for (var i = 0; i < 2; i++) {
 			ciblesPossibles[i] = [];
 			for (var j = 0; j < 5; j++) {
-				console.log('portee -> carte.effet.portee : '+carte.effet.portee + ', pos : '+pos+', socket.iCourant : '+socket.iCourant);
 				ciblesPossibles[i][j] = 1 + portee(i, j, ID, pos, carte.effet.portee) + duBonCote(i, ID, carte.effet.ciblesLegales);
 			}
 			console.log('ciblesPossibles['+i+',x] = ' + ciblesPossibles[i][0] + ciblesPossibles[i][1] + ciblesPossibles[i][2] + ciblesPossibles[i][3] + ciblesPossibles[i][4]);
@@ -92,7 +91,6 @@ function duBonCote(i, ID, ciblesLegales) {
 }
 
 function maxTab(tab) {
-	console.log('maxTab');
 	var max = 0;
 	for (var i = 0; i < 2; i++) {
 		for (var j = 0; j < 5; j++) {
