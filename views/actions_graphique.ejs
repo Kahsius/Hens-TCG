@@ -1,0 +1,9 @@
+<% function drawCarte(carte,zoom) { %>
+<div class="carte_container" style="font-size:<%= zoom*12 %>px;" id="bloc_<%= carte.nom %>">
+	<img class="image_carte" src="./img/<%= carte.image %>.png" alt="illustration <%= carte.nom %>" />
+	<div class="texte_bloc_carte">
+		<%= carte.effet %>
+	</div>
+</div>
+<% } %>
+

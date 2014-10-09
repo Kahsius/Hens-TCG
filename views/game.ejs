@@ -2,58 +2,34 @@
 <html>
 	<head>
 		<title>D-D-D-Duel !!!</title>
-		<link rel="stylesheet" type="text/css" href="../view/css/game.css">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="./actions.js"></script>
 		<script type="text/javascript" src="./composants.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/game.css">
 	</head>
 
 	<body>
-	<style type="text/css">
-	header{
-	width: 100%;
-	height: 50px;
-	background: #333;
-	color: white;
-	text-align: center;
-}
-
-.bloc{
-	width:550px;
-	height: 320px;
-	background: #444;
-	position: relative;
-	margin: auto;
-	margin-top: 5em;
-}
-
-.case{
-	/*background:#eee;*/
-	width:100px;
-	height:150px;
-	float:left;
-	margin:5px;
-	transition: all 0.4s;
-}
-.case:hover{
-	transform:scale(1.1);
-	transform:scale(1.1);
-	-webkit-transform:scale(1.1);
-}
-</style>
+<%- include actions_graphique.ejs %>
+<%- include partials/header.ejs %>
+<% function drawCarte(carte,zoom) { %>
+<div class="carte_container" style="font-size:<%= zoom*12 %>px;" id="bloc_<%= carte.nom %>">
+	<img class="image_carte" src="./img/<%= carte.nom %>.png" alt="illustration <%= carte.nom %>" />
+	<div class="texte_bloc_carte">
+		<%= carte.effet %>
+	</div>
+</div>
+<% } %>
 		<% function number(i,j){ %>
-		<p> <%=i %></p>
+		<p style="text-decoration:none;color:white;"> <%='je suis à l\'index '+(i+1)+' et j\'appartiens au joueur '+(j+1)+'.' %></p>
 		<% } %>
-		<header>
-			HENS TCG OP POPO
-		</header>
+
 		<% var nbCases = 5; %>
 		<div class="bloc">
 		<% 
 		for(var j=0;j<2;j++){
 			for(var i = 0;i< nbCases;i++){
 		%>
-				<a   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ><% number(i) %></a>
+				<div   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ><% drawCarte(carteNoob,1) %></div>
 		<% } 
 		}
 		%>

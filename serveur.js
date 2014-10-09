@@ -19,7 +19,7 @@ var terrain = composants.creerTerrain();
 var partie = new composants.Partie (j1, j2, terrain);
 
 app.get('/game', function (req, res) {
-	res.render('game.ejs', {});
+	res.render('game.ejs', {carteNoob:new composants.Carte("Saph","Envol","Saph et un allié sont invincible pendant 2 tours.")});
 });
 
 io.sockets.on('connection', function (socket) {
