@@ -1,5 +1,6 @@
 // Appel du fichier de constantes
 var constantes = require('./ressources/constantes');
+var actions = require('./ressources/actions');
 
 // Définition des composants dont on aura besoin
 var express = require('express'),
@@ -71,8 +72,8 @@ io.sockets.on('connection', function (socket) {
 					// attribut au i eme perso la case i (cf composants.js pour structure de terrain)
 					partie.joueurs[0].persos[i].caseTerrain = terrain.listeCases[0][constantes.placementsJ1[i]-1];
 					partie.joueurs[1].persos[i].caseTerrain = terrain.listeCases[1][constantes.placementsJ2[i]-1];
-					pioche(partie.joueurs[0], 5);
-					pioche(partie.joueurs[1], 5);
+					actions.pioche(partie.joueurs[0], 5);
+					actions.pioche(partie.joueurs[1], 5);
 				}
 			}
 			else {
@@ -99,8 +100,8 @@ io.sockets.on('connection', function (socket) {
 			socket.broadcast.emit('placements', 1, partie.joueurs[socket.iAdverse].persos);
 		}
 		if(indice == 1) {
-			pioche(partie.joueurs[0], 5);
-			pioche(partie.joueurs[1], 5);
+			actions.pioche(partie.joueurs[0], 5);
+			actions.pioche(partie.joueurs[1], 5);
 		}
 	});
 

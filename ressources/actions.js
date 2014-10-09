@@ -111,7 +111,7 @@ function maxTab(tab) {
 function pioche(joueur, n) {
 	for (var i = 0; i < n; i++) {
 		joueur.main.push(joueur.deck[0]);
-		joueur.deck.splice(0,1);
+		joueur.deck.listeCartes.splice(0,1);
 	}
 }
 
@@ -239,8 +239,8 @@ function caseClic(indiceCase,joueur){
 	socket.emit('clic', joueur, indiceCase);
 }
 
-/*
-Pas besoin si lancé dans un html
+
+// Pas besoin si lancé dans un html
 
 exports.cible = cible;
 exports.pioche = pioche;
@@ -252,5 +252,3 @@ exports.soigne = soigne;
 exports.detruitPerso = detruitPerso;
 exports.jouer = jouer;
 exports.melange = melange;
-exports.testActions = testActions;
-*/
