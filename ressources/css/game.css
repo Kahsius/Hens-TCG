@@ -21,6 +21,7 @@ header{
 	height:150px;
 	float:left;
 	margin:5px;
+	color: white;
 	transition: all 0.4s;
 }
 .case:hover{
@@ -50,10 +51,8 @@ a{
 }
 
 .image_carte{
-
 	display: block;
 	width: 6.4em;
-
 	margin-left: 0.3em;
 	height: 4em;
 	background: black;

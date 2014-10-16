@@ -3,22 +3,16 @@
 	<head>
 		<title>D-D-D-Duel !!!</title>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="./lib/jquery.min.js"></script>
 		<script type="text/javascript" src="./actions.js"></script>
 		<script type="text/javascript" src="./composants.js"></script>
+		<script type="text/javascript" src="./actions_graphique.js"></script>
 		<link rel="stylesheet" type="text/css" href="./css/game.css">
 	</head>
 
 	<body>
-<%- include actions_graphique.ejs %>
 <%- include partials/header.ejs %>
-<% function drawCarte(carte,zoom) { %>
-<div class="carte_container" style="font-size:<%= zoom*12 %>px;" id="bloc_<%= carte.nom %>">
-	<img class="image_carte" src="./img/<%= carte.nom %>.png" alt="illustration <%= carte.nom %>" />
-	<div class="texte_bloc_carte">
-		<%= carte.effet %>
-	</div>
-</div>
-<% } %>
+
 		<% function number(i,j){ %>
 		<p style="text-decoration:none;color:white;"> <%='je suis à l\'index '+(i+1)+' et j\'appartiens au joueur '+(j+1)+'.' %></p>
 		<% } %>
@@ -29,7 +23,7 @@
 		for(var j=0;j<2;j++){
 			for(var i = 0;i< nbCases;i++){
 		%>
-				<div   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ><% drawCarte(carteNoob,1) %></div>
+				<div   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ></div>
 		<% } 
 		}
 		%>
@@ -37,7 +31,9 @@
 		<!-- Le 0 dans le socket.emit sera remplacé pour chaque carte par sa position dans la main -->
 		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='socket.emit("carteChoisie", 0)'/>
 		<script type="text/javascript">
-
+	
+			console.log("ready!");
+			drawCarte(new Carte("Saph","Envol","Saph et un allié sont immunisés pendant 2 tours."),"#case0j0");
 			console.log("Le js se lance bien");
 			var socket = io.connect('http://localhost:8080');
 			socket.emit('rejoint');

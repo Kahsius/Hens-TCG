@@ -33,14 +33,27 @@ function Perso (nom, village, pv, pouvoir, caseTerrain, bouclier) {
 	this.pv = pv;
 	this.pouvoirInit = pouvoir;
 	this.pouvoir = pouvoir;
-	this.caseTerrain = caseTerrain
-	this.bouclier = bouclier
+	this.caseTerrain = caseTerrain;
+	this.bouclier = bouclier;
 }	
 
-function Carte (nomPerso, nom, effet ) {
+function Carte (nomPerso, nom, effet ) { //param position à rajouter
 	this.nomPerso = nomPerso;
 	this.nom = nom;
 	this.effet = effet;
+	//this.position =position
+	/* COMMENTAIRE:
+	position correspond au nom de son parent ( sélecteur css):
+	il faut trouver une convention de nommage donc pour ces cases:
+	pour l'instant on à pour les cases en jeu 
+	cXjY , mais il manque la lettre de sélection pour savoir si c'est une case de main ou de jeu.
+	il fautdrait donc:
+	[m/j/i/c/l]cXjY avec:
+	m: main
+	j:en jeu
+	c: cimetière
+	l: librairie ou deck pour les intimes
+	*/
 }
 
 function Terrain (listeCases) {
@@ -131,7 +144,6 @@ exports.Carte = Carte;
 exports.Terrain = Terrain;
 exports.Case = Case;
 exports.Effet = Effet;
-
 exports.creerJoueursBidons = creerJoueursBidons;
 exports.creerTerrain = creerTerrain;
 exports.creerCarteBidon = creerCarteBidon;

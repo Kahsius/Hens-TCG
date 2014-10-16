@@ -240,13 +240,13 @@ function caseClic(indiceCase,joueur){
 
 // Pas besoin si lancé dans un html
 
-exports.cible = cible;
-exports.pioche = pioche;
-exports.degats = degats;
-exports.defausse = defausse;
-exports.defausseAleatoire = defausseAleatoire;
-exports.deplace = deplace;
-exports.soigne = soigne;
-exports.detruitPerso = detruitPerso;
-exports.jouer = jouer;
-exports.melange = melange;
+// exports.cible = cible;
+// exports.pioche = pioche;
+// exports.degats = degats;
+// exports.defausse = defausse;
+// exports.defausseAleatoire = defausseAleatoire;
+// exports.deplace = deplace;
+// exports.soigne = soigne;
+// exports.detruitPerso = detruitPerso;
+// exports.jouer = jouer;
+// exports.melange = melange;
