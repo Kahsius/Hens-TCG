@@ -116,11 +116,13 @@ io.sockets.on('connection', function (socket) {
 	socket.on('clic', function(joueur, pos) {
 		console.log('clic - serveur');
 		if (socket.attenteCible == true) {
+			socket.emit('message',"j'attend une cible!");
 			if(socket.ciblesPossibles[joueur][pos]) {
+				console.log('effet appliqué');
+				socket.emit('message','effet appliqué');
 				// TODO : phase de déplacement avant lancement du sort
 				socket.attenteCible = false;
 				cibleChoisie = [joueur][pos];
-				console.log('effet appliqué');
 				socket.carteEnCours.effet.arcane(partie, cibleChoisie);
 				// TODO : enlever la carte de la main du joueur
 				/*
@@ -130,7 +132,7 @@ io.sockets.on('connection', function (socket) {
 				*/
 			}
 			else {
-				socket.emit('message', 'La cible n\'est pas valide');
+				socket.emit('message', 'La cible n\'est pas valide!!');
 			}
 		}
 	});

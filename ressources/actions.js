@@ -1,3 +1,4 @@
+
 /*
 	Toutes les méthodes dont on pourrait avoir besoin dans le jeu
 	/!\ Toutes les fonctions commentées AR sont à revoir
