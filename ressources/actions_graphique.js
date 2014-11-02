@@ -16,4 +16,7 @@ function drawCarte(carte,positionTag){
 	position.append(carteDisplay.join(""));
 }
 
-
+function ChangerTexteEntete(text){
+	$('header').empty();
+	$('header').html(text);
+}

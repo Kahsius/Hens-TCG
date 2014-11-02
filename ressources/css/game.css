@@ -12,7 +12,13 @@ header{
 	background: #444;
 	position: relative;
 	margin: auto;
-	margin-top: 5em;
+	margin-top: 4em;
+}
+
+.main{
+	height: 200px;
+	background: #222;
+	margin-top: 1em;
 }
 
 .case{
@@ -24,6 +30,17 @@ header{
 	color: white;
 	transition: all 0.4s;
 }
+
+.case-main{
+	background: grey;
+	width: 130px;
+	height: 180px;
+	float: left;
+	margin: 5px;
+	color:white;
+
+}
+
 .case:hover{
 	transform:scale(1.1);
 	transform:scale(1.1);

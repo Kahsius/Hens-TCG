@@ -14,23 +14,32 @@
 <%- include partials/header.ejs %>
 
 
-		<%  var nbCases = 5; %>
+		<%
+		  var nbCases = 5;
+		  var nbMain=5;
+		%>
+				<!-- Le 0 dans le socket.emit sera remplacé pour chaque carte par sa position dans la main -->
+		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='ChoisirUnSort(0)'/>
 		<div class="bloc">
 		<% 
 		for(var j=0;j<2;j++){
 			for(var i = 0;i< nbCases;i++){
 		%>
-				<div   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ></div>
+				<a   href="#" onClick="caseClic(<%= i %>,<%= j %>)" class="case" id="<%= 'case'+i+'j'+j %>" style="background:rgba(<%= j*180+i*25 %>,<%= j*180+i*5 %>,<%= 20+j*180+i*5 %>,1)"  ></a>
 		<% } 
 		}
 		%>
 		</div>
-		<!-- Le 0 dans le socket.emit sera remplacé pour chaque carte par sa position dans la main -->
-		<input type='button' name='jouerUneCarte' value='Jouer une carte' onclick='socket.emit("carteChoisie", 0)'/>
+		<div class="main">
+			<%	for(i=0;i<nbMain;i++){ %>
+				<div onClick="ChoisirUnSort(<%= i %>)" class="case-main" id="<%= 'main'+i %>">
+				</div>
+			<% } %>
+		</div>
+
 		<script type="text/javascript">
-	
+			
 			console.log("ready!");
-			drawCarte(new Carte("Saph","Envol","Saph et un allié sont immunisés pendant 2 tours."),"#case0j0");
 			console.log("Le js se lance bien");
 			var socket = io.connect('http://localhost:8080');
 			socket.emit('rejoint');
@@ -60,6 +69,11 @@
 				socket.emit('placementFini', indice, placements);
 			});
 
+			socket.on("resetHead",function(carte){
+				console.log("resetheadverif: "+carte.nom);
+				ChangerTexteEntete("Bienvenue sur Hens TCG!(sort "+carte.nom+" lancé !");
+			});
+			
 			socket.on('message', function(message) {
 				console.log(message);
 			});

@@ -8,6 +8,7 @@
 console.log('Chargement d\'actions_clients.js');
 
 function jouer(carte) {
+	console.log("je suis la carte :" +carte);
 console.log('jouer');
 	socket.emit('recup');
 	socket.on('recup', function(monID, partie) {	// In your face baby !
@@ -23,7 +24,7 @@ console.log('jouer');
 				perso = moi.persos[i];
 			}
 		}
-
+		ChangerTexteEntete('Choix d\'une Cible pour lancer le sort '+carte.nomPerso);
 		// On lance la fonction qui va initialiser les fonctions de ciblage.
 		cible(monID, perso.caseTerrain.pos, carte);
 	});
@@ -112,8 +113,8 @@ function pioche(joueur, n) {
 		joueur.main.push(joueur.deck[0]);
 		joueur.deck.listeCartes.splice(0,1);
 	}
-}
 
+}
 
 function degats(joueur, perso, n) {
 	perso.pv = perso.pv - n;
@@ -236,6 +237,12 @@ function vision (deck, n) {
 function caseClic(indiceCase,joueur){ 
 	console.log("case "+indiceCase+" du joueur "+joueur+".");
 	socket.emit('clic', joueur, indiceCase);
+}
+
+function ChoisirUnSort(indice){
+	console.log("choisir un sort à l'indice : " +indice);
+	$('header').empty();
+	socket.emit("carteChoisie", indice);
 }
 
 

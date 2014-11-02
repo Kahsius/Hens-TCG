@@ -20,8 +20,9 @@ var terrain = composants.creerTerrain();
 var partie = new composants.Partie (j1, j2, terrain);
 
 app.get('/game', function (req, res) {
-	res.render('game.ejs', {carteNoob:new composants.Carte("Saph","Envol","Saph et un allié sont invincible pendant 2 tours.")});
+	res.render('game.ejs');
 });
+
 
 io.sockets.on('connection', function (socket) {
 	console.log('connection');
@@ -73,6 +74,7 @@ io.sockets.on('connection', function (socket) {
 					partie.joueurs[0].persos[i].caseTerrain = terrain.listeCases[0][constantes.placementsJ1[i]-1];
 					partie.joueurs[1].persos[i].caseTerrain = terrain.listeCases[1][constantes.placementsJ2[i]-1];
 				}
+				
 				actions.pioche(partie.joueurs[0], 5);
 				actions.pioche(partie.joueurs[1], 5);
 				console.log("main de j1 : " + partie.joueurs[0].main.length);
@@ -124,6 +126,8 @@ io.sockets.on('connection', function (socket) {
 				socket.attenteCible = false;
 				cibleChoisie = [joueur][pos];
 				socket.carteEnCours.effet.arcane(partie, cibleChoisie);
+				console.log("je  suissss :"+socket.carteEnCours.nom);
+				socket.emit("resetHead",socket.carteEnCours);
 				// TODO : enlever la carte de la main du joueur
 				/*
 					var indexCarte = partie.joueurs[socket.iCourant].main.indexOf(carte);
